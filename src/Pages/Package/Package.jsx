@@ -7,11 +7,12 @@ const Package = () => {
   const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [packageInfo, setPackageInfo] = useState({});
-  const handleOpen = (type, details, price) => {
+  const handleOpen = (type, details, member, price) => {
     setIsOpen(true);
     setPackageInfo({
       type: type,
       details: details,
+      member: member,
       price: price,
     });
   };
@@ -51,7 +52,7 @@ const Package = () => {
             </p>
             <h2 className="text-5xl font-bold mb-8 text-[#00AFEF]">$5</h2>
             <button
-              onClick={() => handleOpen("Basic", "5 Members for $5", 5)}
+              onClick={() => handleOpen("Basic", "5 Members for $5", 5, 5)}
               className="bg-[#00AFEF] text-white py-2 px-4 rounded-lg text-lg hover:bg-[#176986] transition duration-300 ease-in-out"
             >
               Buy Now
@@ -80,7 +81,7 @@ const Package = () => {
             </p>
             <h2 className="text-5xl font-bold mb-8 text-green-600">$8</h2>
             <button
-              onClick={() => handleOpen("Premium", "10 Members for $8", 8)}
+              onClick={() => handleOpen("Premium", "10 Members for $8", 10, 8)}
               className="bg-green-600 text-white py-2 px-4 rounded-lg text-lg hover:bg-green-700 transition duration-300 ease-in-out"
             >
               Buy Now
@@ -112,7 +113,7 @@ const Package = () => {
             <h2 className="text-5xl font-bold mb-8 text-[#144279]">$15</h2>
             <button
               onClick={() =>
-                handleOpen("Professional", "20 Members for $15", 15)
+                handleOpen("Professional", "20 Members for $15", 20, 15)
               }
               className="bg-[#144279] text-white py-2 px-4 rounded-lg text-lg hover:bg-[#093c7b] transition duration-300 ease-in-out"
             >

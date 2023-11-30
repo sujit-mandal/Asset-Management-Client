@@ -19,6 +19,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCurrentUser from "../../../hooks/useCurrentUser";
+import Spinner from "../../../Components/Spinner/Spinner";
 const MyTeam = () => {
   const axioxSecure = useAxiosSecure();
   const { data: currentUser } = useCurrentUser();
@@ -57,7 +58,7 @@ const MyTeam = () => {
   });
 
   if (isLoading) {
-    return <p>loading...</p>;
+    return <Spinner></Spinner>;
   }
 
   return (

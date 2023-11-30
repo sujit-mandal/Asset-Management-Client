@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { capitalizeWords } from "../../../Utilitis/Utility";
+import useCurrentUser from "../../../hooks/useCurrentUser";
 import {
   Container,
   IconButton,
@@ -15,8 +17,6 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
-import { capitalizeWords } from "../../../Utilitis/Utility";
-import useCurrentUser from "../../../hooks/useCurrentUser";
 
 const AllCustomRequest = () => {
   const axiosSecure = useAxiosSecure();
@@ -68,7 +68,9 @@ const AllCustomRequest = () => {
 
   const handleReject = async (id) => {
     await axiosSecure
-      .patch(`/admin/update-custom-request-asset-info/${id}`, { status: "Rejected" })
+      .patch(`/admin/update-custom-request-asset-info/${id}`, {
+        status: "Rejected",
+      })
       .then((res) => {
         console.log(res.data);
         refetch();

@@ -20,6 +20,7 @@ import AdminProfile from "../Pages/Admin/AdminProfile/AdminProfile";
 import EmployeeSignup from "../Pages/Signup/EmployeeSignup";
 import HRSignup from "../Pages/Signup/HRSignup";
 import Login from "../Pages/Login/Login";
+import PrivateRoute from "./PrivateRoute";
 
 const route = createBrowserRouter([
   {
@@ -32,32 +33,60 @@ const route = createBrowserRouter([
       },
       {
         path: "/packages",
-        element: <Package />,
+        element: (
+          <PrivateRoute>
+            <Package />
+          </PrivateRoute>
+        ),
       },
       //employee routes
       {
         path: "/employee/dashboard",
-        element: <EmployeeHome />,
+        element: (
+          <PrivateRoute>
+            <EmployeeHome />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/employee/asset-request",
-        element: <RequestAsset />,
+        element: (
+          <PrivateRoute>
+            <RequestAsset />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/employee/my-team",
-        element: <MyTeam />,
+        element: (
+          <PrivateRoute>
+            <MyTeam />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/employee/my-assets",
-        element: <MyAsset />,
+        element: (
+          <PrivateRoute>
+            <MyAsset />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/employee/create-custom-request",
-        element: <CustomRequest />,
+        element: (
+          <PrivateRoute>
+            <CustomRequest />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
 
       //admin routes
@@ -67,35 +96,64 @@ const route = createBrowserRouter([
       },
       {
         path: "/admin/all-employees",
-        element: <MyEmployee />,
+        element: (
+          <PrivateRoute>
+            <MyEmployee />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/admin/add-employee",
-        element: <AddEmployee />,
+        element: (
+          <PrivateRoute>
+            <AddEmployee />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/admin/add-asset",
-        element: <AddAsset />,
+        element: (
+          <PrivateRoute>
+            <AddAsset />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/admin/asset-list",
-        element: <AssetList />,
+        element: (
+          <PrivateRoute>
+            <AssetList />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/admin/all-asset-request",
-        element: <AllRequest />,
+        element: (
+          <PrivateRoute>
+            <AllRequest />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/admin/all-custom-request",
-        element: <AllCustomRequest />,
+        element: (
+          <PrivateRoute>
+            <AllCustomRequest />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/admin/payment",
         element: <Payment />,
       },
+
       {
         path: "/admin/profile",
-        element: <AdminProfile />,
+        element: (
+          <PrivateRoute>
+            <AdminProfile />
+          </PrivateRoute>
+        ),
       },
     ],
   },

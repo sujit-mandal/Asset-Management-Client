@@ -16,19 +16,26 @@ import {
 } from "@mui/material";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import RequestModal from "../../../Components/Shared/Modals/RequestModal";
+import toast from "react-hot-toast";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 const RequestAsset = () => {
   const axiosSecure = useAxiosSecure();
   const [selectedType, setSelectedCategory] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [item, setItem] = useState({});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { data: currentUser } = useCurrentUser();
 
+  const handleOpen = () => {
+    if (currentUser.team === false) {
+      return toast.error("For request please contact with HR");
+    }
+    setOpen(true);
+  };
   const columns = [
     { id: "assetName", label: "Asset Name", minWidth: 170 },
     { id: "type", label: "Asset Type", minWidth: 170 },
@@ -51,7 +58,6 @@ const RequestAsset = () => {
     setSearchValue(searchText);
     e.target.reset();
   };
-
   const {
     data: assets,
     isLoading,
@@ -60,11 +66,14 @@ const RequestAsset = () => {
     queryKey: ["assets", selectedType, searchValue],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/employee/asset-list/${currentUser?.email}?type=${selectedType}&q=${searchValue}`
+        `/employee/asset-list?type=${selectedType}&q=${searchValue}`
       );
       return res.data;
     },
   });
+  if (isLoading) {
+    return <Spinner></Spinner>;
+  }
   return (
     <>
       <Container maxWidth="lg" sx={{ marginTop: "24px" }}>
@@ -164,7 +173,7 @@ const RequestAsset = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={assets?.length}
+            count={assets?.length || 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

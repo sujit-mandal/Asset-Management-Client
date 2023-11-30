@@ -39,6 +39,8 @@ const APendingReq = () => {
       return res.data;
     },
   });
+
+  
   return (
     <div className=" my-4">
       <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">
@@ -46,12 +48,6 @@ const APendingReq = () => {
           <h3 className="text-xl font-bold leading-none text-gray-900">
             All Pending Request.
           </h3>
-          {/* <button
-            onClick={() => handleToggleView()}
-            className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg inline-flex items-center p-2"
-          >
-            {showAll ? "View Less" : "View All"}
-          </button> */}
         </div>
         <div className="flow-root">
           <>

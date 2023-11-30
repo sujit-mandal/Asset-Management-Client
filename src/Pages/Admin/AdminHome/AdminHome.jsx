@@ -3,8 +3,14 @@ import APendingReq from "../../../Components/Adminhome/APendingReq";
 import ALimited from "../../../Components/Adminhome/ALimited";
 import Astats from "../../../Components/Adminhome/Astats";
 import { Container } from "@mui/material";
+import useCurrentUser from "../../../hooks/useCurrentUser";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 const AdminHome = () => {
+  const { isLoading } = useCurrentUser();
+  if (isLoading) {
+    return <Spinner></Spinner>;
+  }
   return (
     <div className="mx-auto">
       <Container maxWidth="xl">

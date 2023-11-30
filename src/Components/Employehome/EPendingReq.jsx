@@ -18,7 +18,7 @@ import useCurrentUser from "../../hooks/useCurrentUser";
 
 const EPendingReq = () => {
   const axiosSecure = useAxiosSecure();
-  const currentUser = useCurrentUser();
+  const {data:currentUser} = useCurrentUser();
   const [pendingRequests, setPendingRequests] = useState([]);
   const [showAll, setShowAll] = useState(false);
 

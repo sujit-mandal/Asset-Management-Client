@@ -5,11 +5,15 @@ import { useState } from "react";
 import ProfileModal from "../../../Components/Shared/Modals/ProfileModal";
 
 const Profile = () => {
+  const { data: currentUser, refetch } = useCurrentUser();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    refetch();
+    setOpen(false);
+  };
 
-  const { data: currentUser, refetch } = useCurrentUser();
+  console.log(currentUser);
 
   return (
     <div className="bg-gray-200 font-sans h-screen w-full flex flex-row justify-center items-center">

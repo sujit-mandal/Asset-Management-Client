@@ -16,10 +16,11 @@ import {
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { capitalizeWords } from "../../Utilitis/Utility";
 import useCurrentUser from "../../hooks/useCurrentUser";
+import Spinner from "../Spinner/Spinner";
 
 const EMonthlyReq = () => {
   const axioxSecure = useAxiosSecure();
-  const currentUser = useCurrentUser();
+  const { data: currentUser } = useCurrentUser();
 
   const columns = [
     { id: "assetName", label: "Asset Name", minWidth: 170 },
@@ -40,7 +41,9 @@ const EMonthlyReq = () => {
       return res.data;
     },
   });
-  console.log(rquestsOnThisMonth);
+  if (isLoading) {
+    return <Spinner></Spinner>;
+  }
   return (
     <div className=" my-4">
       <div className="bg-white shadow rounded-lg mb-4 p-4 sm:p-6 h-full">

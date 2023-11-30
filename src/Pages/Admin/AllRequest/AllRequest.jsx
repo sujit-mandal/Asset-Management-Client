@@ -16,12 +16,16 @@ import {
   TableRow,
 } from "@mui/material";
 import { capitalizeWords } from "../../../Utilitis/Utility";
+import moment from "moment";
+import toast from "react-hot-toast";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 const AllRequest = () => {
   const axiosSecure = useAxiosSecure();
   const [searchValue, setSearchValue] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const currentDate = moment().format("YYYY-MM-DD");
   const columns = [
     { id: "assetName", label: "Asset Name", minWidth: 170 },
     { id: "type", label: "Asset Type", minWidth: 170 },
@@ -61,12 +65,17 @@ const AllRequest = () => {
       return res.data;
     },
   });
-
+  if (isLoading) {
+    return <Spinner></Spinner>;
+  }
   const handleApprove = async (id) => {
     await axiosSecure
-      .patch(`/admin/update-request-asset-info/${id}`, { status: "Approved" })
+      .patch(`/admin/update-request-asset-info/${id}`, {
+        approveDate: currentDate,
+        status: "Approved",
+      })
       .then((res) => {
-        console.log(res.data);
+        toast.success("Request approved");
         refetch();
       });
   };
@@ -79,7 +88,7 @@ const AllRequest = () => {
         refetch();
       });
   };
-  
+
   return (
     <>
       <Container maxWidth="xl" sx={{ marginTop: "24px" }}>

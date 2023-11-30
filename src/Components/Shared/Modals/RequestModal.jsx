@@ -29,6 +29,7 @@ const RequestModal = ({ open, handleClose, item }) => {
       userEmail: currentUser.email,
       admin: currentUser.haveAdmin,
       requestDate: currentDate,
+      approveDate: null,
       assetName: item?.assetName,
       type: item?.type,
       note: additionalMessage,

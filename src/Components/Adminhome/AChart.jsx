@@ -2,18 +2,33 @@ import { useQuery } from "@tanstack/react-query";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import { useEffect, useState } from "react";
+import Spinner from "../Spinner/Spinner";
 
 const AChart = () => {
-  const { data: currentUser } = useCurrentUser();
   const axiosSecure = useAxiosSecure();
   const COLORS = ["#0088FE", "#00C49F"];
   const RADIAN = Math.PI / 180;
-  const {
-    data: employeeRequests,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: currentUser, isLoading } = useCurrentUser();
+  const [paymentInfo, setPaymentInfo] = useState([0]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axiosSecure.get(
+          `/admin/payment-info/${currentUser?.email}`
+        );
+        setPaymentInfo(res.data);
+      } catch (error) {
+        console.error("Error fetching payment info:", error);
+      }
+    };
+    fetchData();
+  }, [axiosSecure, currentUser]);
+
+  if (isLoading) return <Spinner></Spinner>;
+  const { data: employeeRequests, refetch } = useQuery({
     queryKey: ["employeerequests", currentUser?.email],
+    // enabled: !currentUser?.email,
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/admin/all-asset-request/${currentUser?.email}`
@@ -21,6 +36,19 @@ const AChart = () => {
       return res.data;
     },
   });
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (currentUser?.email) {
+  //       const res = await axiosSecure.get(
+  //         `/admin/all-asset-request/${currentUser?.email}`
+  //       );
+  //       console.log(res.data);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [currentUser?.email, axiosSecure]);
+
   const data = [
     { name: "Returnable", value: employeeRequests?.returnable?.length || 0 },
     {
@@ -28,7 +56,7 @@ const AChart = () => {
       value: employeeRequests?.nonReturnable?.length || 0,
     },
   ];
-  console.log(data);
+
   const renderCustomizedLabel = ({
     cx,
     cy,
@@ -98,16 +126,8 @@ const AChart = () => {
               Latest Transactions
             </h3>
             <span className="text-base font-normal text-gray-500">
-              This is a list of latest transactions
+              This is a list of latest 5 transactions
             </span>
-          </div>
-          <div className="flex-shrink-0">
-            <a
-              href="#"
-              className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2"
-            >
-              View all
-            </a>
           </div>
         </div>
         <div className="flex flex-col mt-8">
@@ -121,13 +141,13 @@ const AChart = () => {
                         scope="col"
                         className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Transaction
+                        Transaction ID
                       </th>
                       <th
                         scope="col"
                         className="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                       >
-                        Date & Time
+                        Date
                       </th>
                       <th
                         scope="col"
@@ -138,90 +158,19 @@ const AChart = () => {
                     </tr>
                   </thead>
                   <tbody className="bg-white">
-                    <tr>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                        Payment from
-                        <span className="font-semibold">Bonnie Green</span>
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                        Apr 23 ,2021
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        $2300
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-50">
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                        Payment refund to
-                        <span className="font-semibold">#00910</span>
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                        Apr 23 ,2021
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        -$670
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                        Payment failed from{" "}
-                        <span className="font-semibold">#087651</span>
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                        Apr 18 ,2021
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        $234
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-50">
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                        Payment from
-                        <span className="font-semibold">Lana Byrd</span>
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                        Apr 15 ,2021
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        $5000
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                        Payment from
-                        <span className="font-semibold">Jese Leos</span>
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                        Apr 15 ,2021
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        $2300
-                      </td>
-                    </tr>
-                    <tr className="bg-gray-50">
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900 rounded-lg rounded-left">
-                        Payment from
-                        <span className="font-semibold">THEMESBERG LLC</span>
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                        Apr 11 ,2021
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        $560
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                        Payment from
-                        <span className="font-semibold">Lana Lysle</span>
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                        Apr 6 ,2021
-                      </td>
-                      <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        $1437
-                      </td>
-                    </tr>
+                    {paymentInfo?.map((payment) => (
+                      <tr key={payment.paymentID}>
+                        <td className="p-2 whitespace-nowrap text-sm font-normal text-gray-900">
+                          {payment.paymentID}
+                        </td>
+                        <td className="p-2 whitespace-nowrap text-sm font-normal text-gray-500">
+                          {payment.date}
+                        </td>
+                        <td className="p-2 text-center whitespace-nowrap text-sm font-semibold text-gray-900">
+                          {payment.amount}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

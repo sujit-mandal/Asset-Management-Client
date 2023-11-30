@@ -2,9 +2,11 @@ import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import toast from "react-hot-toast";
+import moment from "moment";
 const AddAsset = () => {
   const axiosSecure = useAxiosSecure();
   const { data: currentUser } = useCurrentUser();
+  const currentDate = moment().format("YYYY-MM-DD");
   const {
     register,
     handleSubmit,
@@ -16,6 +18,7 @@ const AddAsset = () => {
     const assetInfo = {
       admin: currentUser.email,
       assetName: data.assetName,
+      addDate: currentDate,
       quantity: parseInt(data.quantity),
       type: data.type,
     };

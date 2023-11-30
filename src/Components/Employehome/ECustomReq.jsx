@@ -18,7 +18,7 @@ import useCurrentUser from "../../hooks/useCurrentUser";
 
 const ECustomReq = () => {
   const axioxSecure = useAxiosSecure();
-  const currentUser = useCurrentUser();
+  const { data: currentUser } = useCurrentUser();
   const [customRequests, setCustomRequests] = useState([]);
   const [showAll, setShowAll] = useState(false);
 

@@ -18,6 +18,7 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import useCurrentUser from "../../../hooks/useCurrentUser";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 const AssetList = () => {
   const axiosSecure = useAxiosSecure();
@@ -26,14 +27,14 @@ const AssetList = () => {
   const [selectedType, setSelectedCategory] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const { data: currentUser } = useCurrentUser();
-
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleSubmit = (e) => {
     e.preventDefault();
     const searchText = e.target.search.value;
     setSearchValue(searchText);
     e.target.reset();
   };
-
 
   const {
     data: assets,
@@ -48,11 +49,15 @@ const AssetList = () => {
       return res.data;
     },
   });
-
+  console.log(assets);
+  if (isLoading) {
+    return <Spinner></Spinner>;
+  }
   const columns = [
     { id: "assetName", label: "Asset Name", minWidth: 170 },
     { id: "type", label: "Asset Type", minWidth: 170 },
     { id: "quantity", label: "Quantity", minWidth: 100 },
+    { id: "adddate", label: "Added Date", minWidth: 100 },
     { id: "button", label: "Action", minWidth: 100 },
   ];
 
@@ -91,8 +96,6 @@ const AssetList = () => {
 
   const sortedAssets = stableSort(assets, getComparator(order, orderBy));
 
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -184,6 +187,9 @@ const AssetList = () => {
                         {item.quantity}
                       </TableCell>
                       <TableCell sx={{ fontWeight: "500", fontSize: "18px" }}>
+                        {item.addDate}
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: "500", fontSize: "18px" }}>
                         <IconButton aria-label="edit" size="large">
                           <EditIcon />
                         </IconButton>
@@ -199,7 +205,7 @@ const AssetList = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={assets?.length}
+            count={assets?.length || 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

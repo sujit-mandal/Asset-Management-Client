@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import PersonIcon from "@mui/icons-material/Person";
+import logo from "../../../assets/logo.png";
 import {
   Button,
   Container,
@@ -18,6 +19,7 @@ import {
 } from "@mui/material";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import toast from "react-hot-toast";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 const MyEmployee = () => {
   const axioxSecure = useAxiosSecure();
@@ -56,13 +58,13 @@ const MyEmployee = () => {
   });
 
   if (isLoading) {
-    return <p>loading...</p>;
+    return <Spinner></Spinner>;
   }
 
   const handleTeamRemoved = async (id) => {
     const updatedEmployeeInfo = {
       haveAdmin: null,
-      companylogo: null,
+      companylogo: logo,
       team: false,
     };
     const updatedEmployeelimit = currentUser?.employeeLimitRemaining + 1;
@@ -71,7 +73,7 @@ const MyEmployee = () => {
       .then((res) => {
         if (res.data.acknowledged) {
           refetch();
-          toast.success("Employee added!");
+          toast.success("Employee Removed!");
         }
       });
     await axioxSecure

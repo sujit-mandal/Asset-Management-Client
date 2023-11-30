@@ -9,6 +9,8 @@ const Payment = () => {
   const closeModal = () => {
     setIsOpen(false);
   };
+
+  console.log(currentUser?.package)
   return (
     <div>
       <PaymentModal

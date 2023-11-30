@@ -18,18 +18,15 @@ import {
   TableRow,
 } from "@mui/material";
 import Pdf from "../../../Components/Pdf/Pdf";
+import useCurrentUser from "../../../hooks/useCurrentUser";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 const MyAsset = () => {
   const axiosSecure = useAxiosSecure();
   const [selectedType, setSelectedCategory] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [showPdf, setShowPdf] = useState(false);
-
-  const logo = "path-to-your-logo-image";
-  const title = "Dynamic Title";
-  const text = "Dynamic Text Content";
-  const footer = "Dynamic Footer Content";
-
+  const { data: currentUser,isLoading } = useCurrentUser();
   const handleSubmit = (e) => {
     e.preventDefault();
     const searchText = e.target.search.value;
@@ -43,18 +40,19 @@ const MyAsset = () => {
   };
   const {
     data: employeeAssets,
-    isLoading,
     refetch,
   } = useQuery({
     queryKey: ["employeeassets", selectedType, searchValue],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/admin/requested-asset-list?type=${selectedType}&q=${searchValue}`
+        `/employee/my-asset-list/${currentUser?.haveAdmin}?type=${selectedType}&q=${searchValue}`
       );
       return res.data;
     },
   });
-
+  if (isLoading) {
+    return <Spinner></Spinner>;
+  }
   const columns = [
     { id: "assetName", label: "Asset Name", minWidth: 170 },
     { id: "type", label: "Asset Type", minWidth: 170 },
@@ -143,7 +141,7 @@ const MyAsset = () => {
                       {item.requestDate}
                     </TableCell>
                     <TableCell sx={{ fontWeight: "500", fontSize: "18px" }}>
-                      {/* {item.requestDate} */}
+                      {item.approveDate}
                     </TableCell>
                     <TableCell sx={{ fontWeight: "500", fontSize: "18px" }}>
                       {item.status}
@@ -186,7 +184,7 @@ const MyAsset = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={employeeAssets?.length}
+            count={employeeAssets?.length||0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

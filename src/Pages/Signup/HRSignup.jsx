@@ -16,9 +16,14 @@ const HRSignup = () => {
     formState: { errors },
   } = useForm();
   const allPackage = [
-    { price: 5, member:5, details: "5 members for $5", type: "Basic" },
-    { price: 10, member: 10, details: "10 members for $8", type: "Premium" },
-    { price: 20, member: 20, details: "20 members for $10", type: "Professional" },
+    { price: 5, member: 5, details: "5 members for $5", type: "Basic" },
+    { price: 8, member: 10, details: "10 members for $8", type: "Premium" },
+    {
+      price: 20,
+      member: 20,
+      details: "20 members for $10",
+      type: "Professional",
+    },
   ];
 
   const { createUser } = useAuth();

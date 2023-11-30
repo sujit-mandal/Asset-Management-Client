@@ -19,6 +19,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import toast from "react-hot-toast";
+import Spinner from "../../../Components/Spinner/Spinner";
 
 const AddEmployee = () => {
   const axioxSecure = useAxiosSecure();
@@ -43,7 +44,11 @@ const AddEmployee = () => {
     setRowsPerPage(event.target.value, 10);
   };
 
-  const { data: employeesWithoutAdmin, refetch } = useQuery({
+  const {
+    data: employeesWithoutAdmin,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["employeeswithoutadmin"],
     queryFn: async () => {
       const res = await axioxSecure.get("/admin/add-employees");
@@ -54,26 +59,33 @@ const AddEmployee = () => {
     navigate("/packages");
   };
 
+  if (isLoading) {
+    return <Spinner></Spinner>;
+  }
   const handleTeamAdded = async (id) => {
-    const updatedEmployeeInfo = {
-      companylogo: currentUser?.logo || "",
-      haveAdmin: currentUser.email,
-      team: true,
-    };
-    const updatedEmployeelimit =  currentUser?.employeeLimitRemaining - 1;
-    await axioxSecure
-      .patch(`/admin/update-employeeInfo/${id}`, updatedEmployeeInfo)
-      .then((res) => {
-        if (res.data.acknowledged) {
-          refetch();
-          toast.success("Employee added!");
-        }
-      });
-    await axioxSecure
-      .patch(
-        `/admin/update-employeelimit/${currentUser?.email}`, {updatedEmployeelimit}
-      )
-      .then((res) => {});
+    if (currentUser?.employeeLimitRemaining <= 0) {
+      toast.error("Please increase employee limit to add new employee");
+    } else {
+      const updatedEmployeeInfo = {
+        companylogo: currentUser?.logo || "",
+        haveAdmin: currentUser.email,
+        team: true,
+      };
+      const updatedEmployeelimit = currentUser?.employeeLimitRemaining - 1;
+      await axioxSecure
+        .patch(`/admin/update-employeeInfo/${id}`, updatedEmployeeInfo)
+        .then((res) => {
+          if (res.data.acknowledged) {
+            refetch();
+            toast.success("Employee added!");
+          }
+        });
+      await axioxSecure
+        .patch(`/admin/update-employeelimit/${currentUser?.email}`, {
+          updatedEmployeelimit,
+        })
+        .then((res) => {});
+    }
   };
   return (
     <>

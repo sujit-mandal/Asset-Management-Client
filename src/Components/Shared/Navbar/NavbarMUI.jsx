@@ -18,6 +18,7 @@ import "./Navbar.css";
 import useAuth from "../../../hooks/useAuth";
 import { Container } from "@mui/material";
 import GridLoader from "react-spinners/GridLoader";
+import Spinner from "../../Spinner/Spinner";
 const drawerWidth = 240;
 const navItems = [
   { title: "Home", path: "/" },
@@ -53,7 +54,7 @@ const NavbarMUI = (props) => {
     setMobileOpen((prevState) => !prevState);
   };
   if (isLoading) {
-    <GridLoader color="#36d7b7" />;
+    return <Spinner></Spinner>;
   }
   const handleLogOut = () => {
     logOut()
@@ -70,34 +71,16 @@ const NavbarMUI = (props) => {
       onClick={handleDrawerToggle}
       sx={{ textAlign: "center", color: "#000" }}
     >
-      {/* <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
-      </Typography> */}
-
       {!user ? (
-        <Link>
-          <img src={logo} alt="logo" className="w-28 h-20 p-1 rounded-md" />
-        </Link>
+        <img src={logo} alt="logo" className="w-28 h-20 p-1 rounded-md" />
       ) : currentUser?.role === "admin" ? (
-        <Link>
-          <img src={currentUser?.logo} alt="logo" className="w-28 h-20" />
-        </Link>
+        <img src={currentUser?.logo} alt="logo" className="w-28 h-20" />
       ) : currentUser?.role === "employee" ? (
-        <Link>
-          <img
-            src={currentUser?.companylogo}
-            alt="logo"
-            className="w-28 h-20"
-          />
-        </Link>
+        <img src={currentUser?.companylogo} alt="logo" className="w-28 h-20" />
       ) : currentUser?.haveAdmin == null ? (
-        <Link>
-          <img src={logo} alt="logo" className="w-20 h-10 pl-5" />
-        </Link>
+        <img src={logo} alt="logo" className="w-20 h-10 pl-5" />
       ) : (
-        <Link>
-          <img src={logo} alt="logo" className="w-28 h-20" />
-        </Link>
+        <img src={logo} alt="logo" className="w-28 h-20" />
       )}
       <Divider />
       <List>
@@ -189,42 +172,28 @@ const NavbarMUI = (props) => {
               }}
             >
               {!user ? (
-                <Link>
-                  <img
-                    src={logo}
-                    alt="logo"
-                    className="w-28 h-20 p-1 rounded-md"
-                  />
-                </Link>
+                <img
+                  src={logo}
+                  alt="logo"
+                  className="w-28 h-20 p-1 rounded-md"
+                />
               ) : currentUser?.role === "admin" ? (
-                <Link>
-                  <img
-                    src={currentUser?.logo}
-                    alt="logo"
-                    className="w-28 h-20"
-                  />
-                </Link>
+                <img src={currentUser?.logo} alt="logo" className="w-28 h-20" />
               ) : currentUser?.role === "employee" && currentUser?.haveAdmin ? (
-                <Link>
-                  <img
-                    src={currentUser?.companylogo}
-                    alt="logo"
-                    className="w-28 h-20"
-                  />
-                </Link>
+                <img
+                  src={currentUser?.companylogo}
+                  alt="logo"
+                  className="w-28 h-20"
+                />
               ) : currentUser?.role === "employee" &&
                 currentUser?.haveAdmin == null ? (
-                <Link>
-                  <img
-                    src={logo}
-                    alt="logo"
-                    className="w-28 h-20 p-1 rounded-md"
-                  />
-                </Link>
+                <img
+                  src={logo}
+                  alt="logo"
+                  className="w-28 h-20 p-1 rounded-md"
+                />
               ) : (
-                <Link>
-                  <img src={logo} alt="logo" className="w-28 h-20" />
-                </Link>
+                <img src={logo} alt="logo" className="w-28 h-20" />
               )}
             </Typography>
             <Box
@@ -235,7 +204,7 @@ const NavbarMUI = (props) => {
               }}
             >
               <div className="flex items-center justify-evenly gap-10">
-                <ul className=" flex justify-between gap-2 ">
+                <ul className=" flex justify-between items-center gap-2 ">
                   {!user
                     ? navItems.map((item) => (
                         <li
@@ -285,9 +254,48 @@ const NavbarMUI = (props) => {
                         </li>
                       ))
                     : ""}
+
+                  {!user ? null : currentUser?.role === "admin" ? (
+                    <div className="mx-auto">
+                      <img
+                        className="w-10 h-10 rounded-full mr-2 mx-auto"
+                        src={currentUser?.logo}
+                        alt="user photo"
+                      />
+                      <p className="text-sm font-medium text-center">
+                        {currentUser?.name}
+                      </p>
+                    </div>
+                  ) : currentUser?.role === "employee" ? (
+                    <div className="mx-auto">
+                      <img
+                        className="w-10 h-10 rounded-full mr-2 mx-auto"
+                        src={currentUser?.profilePhoto}
+                        alt="user photo"
+                      />
+                      <p className="text-sm font-medium text-center">
+                        {currentUser?.name}
+                      </p>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  {/* {!user ? null : (
+                    <div className="mx-auto">
+                      <img
+                        className="w-10 h-10 rounded-full mr-2 mx-auto"
+                        src={currentUser?.profilePhoto}
+                        alt="user photo"
+                      />
+                      <p className="text-sm font-medium text-center">
+                        {currentUser?.name}
+                      </p>
+                    </div>
+                  )} */}
                 </ul>
 
-                <div>
+                <div className="flex items-center">
                   {user ? (
                     <button
                       onClick={() => handleLogOut()}

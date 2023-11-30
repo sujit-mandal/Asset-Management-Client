@@ -7,8 +7,10 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useCurrentUser from "../../hooks/useCurrentUser";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const CheckoutForm = ({ packageInfo, handleClose }) => {
+  const currentDate = moment().format("YYYY-MM-DD");
   const axiosSecure = useAxiosSecure();
   const stripe = useStripe();
   const elements = useElements();
@@ -19,6 +21,11 @@ const CheckoutForm = ({ packageInfo, handleClose }) => {
   const { data: currentUser } = useCurrentUser();
   const navigate = useNavigate();
   // Create Payment Intent
+  const employeeLimitTotal =
+    parseInt(currentUser?.employeeLimitTotal) + parseInt(packageInfo?.member);
+  const employeeLimitRemaining =
+    parseInt(currentUser?.employeeLimitRemaining) +
+    parseInt(packageInfo?.member);
 
   useEffect(() => {
     if (packageInfo?.price > 0)
@@ -73,20 +80,25 @@ const CheckoutForm = ({ packageInfo, handleClose }) => {
       setCardError(confirmError.message);
     }
 
-    console.log("payment intent", paymentIntent);
-
     if (paymentIntent.status === "succeeded") {
-      const limit = {
-        employeeLimitTotal:
-          currentUser?.employeeLimitTotal + packageInfo?.member,
-        employeeLimitRemaining:
-          currentUser?.employeeLimitRemaining + packageInfo?.member,
+      const paymentInfo = {
+        paymentID: paymentIntent.id,
+        email: currentUser?.email,
+        amount: packageInfo?.price,
+        date: currentDate,
       };
+
+      const limit = {
+        employeeLimitTotal: employeeLimitTotal,
+        employeeLimitRemaining: employeeLimitRemaining,
+      };
+      console.log(employeeLimitTotal, employeeLimitRemaining, limit);
       axiosSecure
-        .patch(`/admin/extend-employee-limit/${user.email}`, { limit })
+        .patch(`/admin/extend-employee-limit/${user?.email}`, limit)
         .then((res) => {
           toast.success("Payment Successful");
           navigate("/admin/dashboard");
+          axiosSecure.post("/payment-info", paymentInfo).then((res) => {});
         });
 
       setProcessing(false);

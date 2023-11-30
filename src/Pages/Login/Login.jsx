@@ -1,27 +1,38 @@
 import { useForm } from "react-hook-form";
 import logo from "../../assets/logo.png";
 import useAuth from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useCurrentUser from "../../hooks/useCurrentUser";
+import SocialLogin from "../../Components/Shared/SocialLogin/SocialLogin";
+import Spinner from "../../Components/Spinner/Spinner";
+import axios from "axios";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 const Login = () => {
   const { signIn } = useAuth();
   const navigate = useNavigate();
-  const { data: currentUser } = useCurrentUser();
-
+  const axiosPublic = useAxiosPublic();
+  // const { data: currentUser, isLoading } = useCurrentUser();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    signIn(data.email, data.password).then(() => {
-      currentUser?.role === "admin"
-        ? navigate("/admin/dashboard")
-        : currentUser?.role === "employee"
-        ? navigate("/employee/dashboard")
-        : navigate("/");
+    signIn(data.email, data.password).then(async () => {
+      await axiosPublic
+        .get(`/user-role/${data.email}`)
+        .then((res) =>
+          res?.data?.role === "admin"
+            ? navigate("/admin/dashboard")
+            : res?.data?.role === "employee"
+            ? navigate("/employee/dashboard")
+            : navigate("/")
+        );
     });
   };
+  // if (isLoading) {
+  //   return <Spinner></Spinner>;
+  // }
   return (
     <section className="gradient-form h-screen bg-neutral-200 dark:bg-neutral-700">
       <div className="container h-full p-10 mx-auto">
@@ -85,17 +96,22 @@ const Login = () => {
                       </div>
 
                       <div className="flex items-center justify-between pb-6">
-                        <p className="mb-0 mr-2">Don't have an account?</p>
-                        <button
-                          type="button"
-                          className="inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-                          data-te-ripple-init
-                          data-te-ripple-color="light"
-                        >
-                          Register
-                        </button>
+                        <p className="mb-0 mr-2 underline">
+                          Don't have an account?
+                        </p>
+                        <Link to={navigate("/")}>
+                          <button
+                            type="button"
+                            className="inline-block rounded border-2 border-danger px-6 pb-[6px] pt-2 text-xs font-medium uppercase leading-normal text-danger transition duration-150 ease-in-out hover:border-danger-600 hover:bg-blue-500 hover:bg-opacity-10 hover:text-danger-600 focus:border-danger-600 focus:text-danger-600 focus:outline-none focus:ring-0 active:border-danger-700 active:text-danger-700"
+                            data-te-ripple-init
+                            data-te-ripple-color="light"
+                          >
+                            Register
+                          </button>
+                        </Link>
                       </div>
                     </form>
+                    <SocialLogin></SocialLogin>
                   </div>
                 </div>
 
@@ -105,10 +121,13 @@ const Login = () => {
                       We are more than just a company
                     </h4>
                     <p className="text-sm">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                      Capital Craft is a leading provider of asset management
+                      services to businesses of all sizes. We offer a
+                      comprehensive suite of services designed to help our
+                      clients maximize the value of their assets. Our team of
+                      experienced professionals has a proven track record of
+                      success in helping businesses achieve their financial
+                      goals.
                     </p>
                   </div>
                 </div>

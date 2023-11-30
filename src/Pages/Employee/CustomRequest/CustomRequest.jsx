@@ -17,6 +17,10 @@ const CustomRequest = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    if (currentUser.team === false) {
+      reset();
+      return toast.error("For request please contact with HR");
+    }
     const imageFile = { image: data.assetImage[0] };
     const res = await axiosPublic.post(image_hosting_api, imageFile, {
       headers: {

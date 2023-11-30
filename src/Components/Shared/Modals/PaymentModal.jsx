@@ -3,9 +3,11 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import useCurrentUser from "../../../hooks/useCurrentUser";
 const stripePromise = loadStripe(import.meta.env.VITE_Payment_Gateway_PK);
 
-const PaymentModal = ({ isOpen, closeModal, packageInfo, user }) => {
+const PaymentModal = ({ isOpen, closeModal, packageInfo }) => {
+  const { data: currentUser } = useCurrentUser();
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -67,12 +69,12 @@ const PaymentModal = ({ isOpen, closeModal, packageInfo, user }) => {
                 </div>
                 <div className="mt-2">
                   <p className="text-lg text-gray-500">
-                    {/* Payer Name: {user[0]?.name} */}
+                    Payer Name: {currentUser?.name}
                   </p>
                 </div>
                 <div className="mt-2">
                   <p className="text-lg text-gray-500">
-                    {/* Payer Email: {user[0]?.email} */}
+                    Payer Email: {currentUser?.email}
                   </p>
                 </div>
 

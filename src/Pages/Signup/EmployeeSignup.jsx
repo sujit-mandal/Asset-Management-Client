@@ -7,6 +7,7 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { updateProfile } from "firebase/auth";
 import auth from "../../Firebase/firebase.config";
 import toast from "react-hot-toast";
+import SocialLogin from "../../Components/Shared/SocialLogin/SocialLogin";
 const image_hosting_key = import.meta.env.VITE_Image_Upload_Token;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const EmployeeSignup = () => {
@@ -37,13 +38,7 @@ const EmployeeSignup = () => {
         companylogo: null,
         role: "employee",
       };
-      console.log(res.data);
       createUser(data.email, data.password).then((result) => {
-        updateProfile(auth.currentUser, {
-          displayName: data.fullName,
-          email: data.email,
-          photoURL: res.data.data.display_url,
-        });
         axiosSecure.post("/add-users", employeeProfileInfo).then((res) => {
           toast.success("Signup Success");
         });
@@ -172,13 +167,13 @@ const EmployeeSignup = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?
-                <a
-                  href="#"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >
-                  Login here
-                </a>
+                <Link to={navigate("/login")}>
+                  <button className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                    Login here
+                  </button>
+                </Link>
               </p>
+              <SocialLogin></SocialLogin>
             </form>
           </div>
         </div>

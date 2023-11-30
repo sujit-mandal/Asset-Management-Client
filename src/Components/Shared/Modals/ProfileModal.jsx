@@ -2,6 +2,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 
 const style = {
   position: "absolute",
@@ -31,7 +32,9 @@ const ProfileModal = ({ open, handleClose, profile, refetch }) => {
 
     axiosSecure
       .patch(`/users/update-profile/${profile._id}`, updatedProfileInfo)
-      .then((res) => console.log(res.data));
+      .then((res) => {if(res.data.modifiedCount>0){
+        toast.success("Profile updated successfully")
+      }});
     refetch();
     handleClose();
   };
