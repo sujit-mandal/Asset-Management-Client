@@ -20,9 +20,13 @@ import {
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import toast from "react-hot-toast";
 import Spinner from "../../../Components/Spinner/Spinner";
+import { Helmet } from "react-helmet-async";
 
 const MyEmployee = () => {
-  const axioxSecure = useAxiosSecure();
+  <Helmet>
+    <title>Admin | My Employee</title>
+  </Helmet>;
+  const axiosSecure = useAxiosSecure();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { data: currentUser } = useCurrentUser();
@@ -50,7 +54,7 @@ const MyEmployee = () => {
   } = useQuery({
     queryKey: ["employeeswithadmin", currentUser?.email],
     queryFn: async () => {
-      const res = await axioxSecure.get(
+      const res = await axiosSecure.get(
         `/admin/all-employees/${currentUser?.email}`
       );
       return res.data;

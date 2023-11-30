@@ -5,8 +5,12 @@ import Astats from "../../../Components/Adminhome/Astats";
 import { Container } from "@mui/material";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import Spinner from "../../../Components/Spinner/Spinner";
+import { Helmet } from "react-helmet-async";
 
 const AdminHome = () => {
+  <Helmet>
+  <title>Admin | Dashboard</title>
+</Helmet>;
   const { isLoading } = useCurrentUser();
   if (isLoading) {
     return <Spinner></Spinner>;

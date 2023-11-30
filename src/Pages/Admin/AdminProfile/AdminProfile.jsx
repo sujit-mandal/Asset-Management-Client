@@ -3,7 +3,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import ProfileModal from '../../../Components/Shared/Modals/ProfileModal'
+import { Helmet } from "react-helmet-async";
 const AdminProfile = () => {
+
+  <Helmet>
+  <title>Profile</title>
+</Helmet>;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

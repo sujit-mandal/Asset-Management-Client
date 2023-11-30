@@ -2,13 +2,14 @@ import { useForm } from "react-hook-form";
 import logo from "../../assets/logo.png";
 import useAuth from "../../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
-import useCurrentUser from "../../hooks/useCurrentUser";
 import SocialLogin from "../../Components/Shared/SocialLogin/SocialLogin";
-import Spinner from "../../Components/Spinner/Spinner";
-import axios from "axios";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 const Login = () => {
+  <Helmet>
+        <title>Capital Craft | Login</title>
+      </Helmet>
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();

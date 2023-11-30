@@ -19,8 +19,12 @@ import { capitalizeWords } from "../../../Utilitis/Utility";
 import moment from "moment";
 import toast from "react-hot-toast";
 import Spinner from "../../../Components/Spinner/Spinner";
+import { Helmet } from "react-helmet-async";
 
 const AllRequest = () => {
+  <Helmet>
+  <title>Admin | Asset Request</title>
+</Helmet>;
   const axiosSecure = useAxiosSecure();
   const [searchValue, setSearchValue] = useState("");
   const [page, setPage] = useState(0);

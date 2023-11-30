@@ -20,13 +20,20 @@ import {
 import Pdf from "../../../Components/Pdf/Pdf";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import Spinner from "../../../Components/Spinner/Spinner";
+import { Helmet } from "react-helmet-async";
 
 const MyAsset = () => {
+
+  <Helmet>
+    <title>Employee | My Asset</title>
+  </Helmet>;
   const axiosSecure = useAxiosSecure();
   const [selectedType, setSelectedCategory] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [showPdf, setShowPdf] = useState(false);
   const { data: currentUser,isLoading } = useCurrentUser();
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleSubmit = (e) => {
     e.preventDefault();
     const searchText = e.target.search.value;
@@ -61,8 +68,7 @@ const MyAsset = () => {
     { id: "status", label: "Status", minWidth: 100 },
     { id: "button", label: "Action", minWidth: 100 },
   ];
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -192,7 +198,7 @@ const MyAsset = () => {
           />
         </Paper>
       </Container>
-      <div className="absolute top-0 z-10">{showPdf && <Pdf></Pdf>}</div>
+      <div className="absolute top-0 z-10">{showPdf && <Pdf ></Pdf>}</div>
     </div>
   );
 };

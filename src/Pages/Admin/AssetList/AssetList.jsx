@@ -19,8 +19,13 @@ import {
 } from "@mui/material";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import Spinner from "../../../Components/Spinner/Spinner";
+import { Helmet } from "react-helmet-async";
 
 const AssetList = () => {
+
+  <Helmet>
+  <title>Admin | Asset List</title>
+</Helmet>;
   const axiosSecure = useAxiosSecure();
   const [orderBy, setOrderBy] = useState("quantity");
   const [order, setOrder] = useState("asc");
@@ -49,7 +54,6 @@ const AssetList = () => {
       return res.data;
     },
   });
-  console.log(assets);
   if (isLoading) {
     return <Spinner></Spinner>;
   }

@@ -7,7 +7,11 @@ import useAxiosPublic from "./../../hooks/useAxiosPublic";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 const HRSignup = () => {
+  <Helmet>
+    <title>HR Signup</title>
+  </Helmet>;
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
@@ -36,27 +40,29 @@ const HRSignup = () => {
       },
     });
     if (res?.data?.success) {
-      createUser(data.email, data.password).then((result) => {
-        const seletedPackage = parseInt(data.packages);
-        const hrProfileInfo = {
-          name: data.fullName,
-          company: data.companyName,
-          logo: res.data.data.display_url,
-          dob: data.dob,
-          email: data.email,
-          package: allPackage[seletedPackage],
-          role: "admin",
-          employeeLimitRemaining: 0,
-          employeeLimitTotal: 0,
-        };
+      createUser(data.email, data.password)
+        .then((result) => {
+          const seletedPackage = parseInt(data.packages);
+          const hrProfileInfo = {
+            name: data.fullName,
+            company: data.companyName,
+            logo: res.data.data.display_url,
+            dob: data.dob,
+            email: data.email,
+            package: allPackage[seletedPackage],
+            role: "admin",
+            employeeLimitRemaining: 0,
+            employeeLimitTotal: 0,
+          };
 
-        axiosSecure
-          .post("/add-users", hrProfileInfo)
-          .then((res) => navigate("/admin/payment"));
-        toast.success("Signup Success");
-      }).catch((err) => {
-        toast.error(err.message);
-      })
+          axiosSecure
+            .post("/add-users", hrProfileInfo)
+            .then((res) => navigate("/admin/payment"));
+          toast.success("Signup Success");
+        })
+        .catch((err) => {
+          toast.error(err.message);
+        });
     }
   };
   return (

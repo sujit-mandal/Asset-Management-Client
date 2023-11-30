@@ -20,8 +20,12 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import Spinner from "../../../Components/Spinner/Spinner";
+import { Helmet } from "react-helmet-async";
 const MyTeam = () => {
-  const axioxSecure = useAxiosSecure();
+  <Helmet>
+    <title>Employee | My Team</title>
+  </Helmet>;
+  const axiosSecure = useAxiosSecure();
   const { data: currentUser } = useCurrentUser();
   const [value, setValue] = useState("1");
   const [page, setPage] = useState(0);
@@ -50,7 +54,7 @@ const MyTeam = () => {
   } = useQuery({
     queryKey: ["teammeats", currentUser?.email],
     queryFn: async () => {
-      const res = await axioxSecure.get(
+      const res = await axiosSecure.get(
         `/admin/all-employees/${currentUser?.haveAdmin}`
       );
       return res.data;

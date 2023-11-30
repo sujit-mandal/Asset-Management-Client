@@ -20,9 +20,13 @@ import { useNavigate } from "react-router-dom";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import toast from "react-hot-toast";
 import Spinner from "../../../Components/Spinner/Spinner";
+import { Helmet } from "react-helmet-async";
 
 const AddEmployee = () => {
-  const axioxSecure = useAxiosSecure();
+  <Helmet>
+  <title>Admin | Add Employee</title>
+</Helmet>;
+  const axiosSecure = useAxiosSecure();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
@@ -51,7 +55,7 @@ const AddEmployee = () => {
   } = useQuery({
     queryKey: ["employeeswithoutadmin"],
     queryFn: async () => {
-      const res = await axioxSecure.get("/admin/add-employees");
+      const res = await axiosSecure.get("/admin/add-employees");
       return res.data;
     },
   });

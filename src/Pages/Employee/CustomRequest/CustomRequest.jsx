@@ -3,9 +3,14 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import useCurrentUser from "./../../../hooks/useCurrentUser";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 const image_hosting_key = import.meta.env.VITE_Image_Upload_Token;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const CustomRequest = () => {
+
+  <Helmet>
+    <title>Employee | Create Custom Request</title>
+  </Helmet>;
   const axiosSecure = useAxiosSecure();
   const axiosPublic = useAxiosPublic();
   const { data: currentUser } = useCurrentUser();

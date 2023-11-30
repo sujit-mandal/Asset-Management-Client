@@ -4,13 +4,15 @@ import { useForm } from "react-hook-form";
 import useAxiosSecure from "./../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { updateProfile } from "firebase/auth";
-import auth from "../../Firebase/firebase.config";
 import toast from "react-hot-toast";
 import SocialLogin from "../../Components/Shared/SocialLogin/SocialLogin";
+import { Helmet } from "react-helmet-async";
 const image_hosting_key = import.meta.env.VITE_Image_Upload_Token;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 const EmployeeSignup = () => {
+  <Helmet>
+    <title>Employee Signup</title>
+  </Helmet>;
   const {
     register,
     handleSubmit,

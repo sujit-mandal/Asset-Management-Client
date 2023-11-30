@@ -3,7 +3,11 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import toast from "react-hot-toast";
 import moment from "moment";
+import { Helmet } from "react-helmet-async";
 const AddAsset = () => {
+  <Helmet>
+    <title>Admin | Add Asset</title>
+  </Helmet>;
   const axiosSecure = useAxiosSecure();
   const { data: currentUser } = useCurrentUser();
   const currentDate = moment().format("YYYY-MM-DD");

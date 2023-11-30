@@ -6,6 +6,7 @@ import {
   StyleSheet,
   PDFViewer,
 } from "@react-pdf/renderer";
+import moment from "moment";
 // Create styles
 const styles = StyleSheet.create({
   page: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     height: window.innerHeight,
   },
 });
-
+const current =moment().date()
 // Create Document Component
 const Pdf = () => {
   return (
@@ -31,10 +32,10 @@ const Pdf = () => {
         {/*render a single page*/}
         <Page size="A4" style={styles.page}>
           <View style={styles.section}>
-            <Text>Hello</Text>
+            <Text>Capital Craft</Text>
           </View>
           <View style={styles.section}>
-            <Text>World</Text>
+            <Text>{current}</Text>
           </View>
         </Page>
       </Document>

@@ -3,8 +3,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import useCurrentUser from "../../../hooks/useCurrentUser";
 import { useState } from "react";
 import ProfileModal from "../../../Components/Shared/Modals/ProfileModal";
+import { Helmet } from "react-helmet-async";
 
 const Profile = () => {
+  <Helmet>
+        <title>Profile</title>
+      </Helmet>
   const { data: currentUser, refetch } = useCurrentUser();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

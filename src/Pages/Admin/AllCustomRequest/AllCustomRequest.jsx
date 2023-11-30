@@ -17,8 +17,12 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import { Helmet } from "react-helmet-async";
 
 const AllCustomRequest = () => {
+  <Helmet>
+    <title>Admin | All Custom Request</title>
+  </Helmet>;
   const axiosSecure = useAxiosSecure();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
