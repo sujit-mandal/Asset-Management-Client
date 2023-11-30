@@ -7,6 +7,7 @@ import SocialLogin from "../../Components/Shared/SocialLogin/SocialLogin";
 import Spinner from "../../Components/Spinner/Spinner";
 import axios from "axios";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import toast from "react-hot-toast";
 const Login = () => {
   const { signIn } = useAuth();
   const navigate = useNavigate();
@@ -18,17 +19,22 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    signIn(data.email, data.password).then(async () => {
-      await axiosPublic
-        .get(`/user-role/${data.email}`)
-        .then((res) =>
-          res?.data?.role === "admin"
-            ? navigate("/admin/dashboard")
-            : res?.data?.role === "employee"
-            ? navigate("/employee/dashboard")
-            : navigate("/")
-        );
-    });
+    signIn(data.email, data.password)
+      .then(async () => {
+        await axiosPublic
+          .get(`/user-role/${data.email}`)
+          .then((res) =>
+            res?.data?.role === "admin"
+              ? navigate("/admin/dashboard")
+              : res?.data?.role === "employee"
+              ? navigate("/employee/dashboard")
+              : navigate("/")
+          );
+        toast.success("Login success");
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
   };
   // if (isLoading) {
   //   return <Spinner></Spinner>;

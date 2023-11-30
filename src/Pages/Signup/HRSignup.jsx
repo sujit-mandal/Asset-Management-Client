@@ -6,6 +6,7 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 import useAxiosPublic from "./../../hooks/useAxiosPublic";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import toast from "react-hot-toast";
 const HRSignup = () => {
   const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
@@ -52,7 +53,10 @@ const HRSignup = () => {
         axiosSecure
           .post("/add-users", hrProfileInfo)
           .then((res) => navigate("/admin/payment"));
-      });
+        toast.success("Signup Success");
+      }).catch((err) => {
+        toast.error(err.message);
+      })
     }
   };
   return (
