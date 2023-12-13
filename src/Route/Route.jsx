@@ -21,6 +21,7 @@ import EmployeeSignup from "../Pages/Signup/EmployeeSignup";
 import HRSignup from "../Pages/Signup/HRSignup";
 import Login from "../Pages/Login/Login";
 import PrivateRoute from "./PrivateRoute";
+import Support from "../Pages/Employee/Support/Support";
 
 const route = createBrowserRouter([
   {
@@ -77,6 +78,14 @@ const route = createBrowserRouter([
         element: (
           <PrivateRoute>
             <CustomRequest />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/employee/support",
+        element: (
+          <PrivateRoute>
+            <Support />
           </PrivateRoute>
         ),
       },

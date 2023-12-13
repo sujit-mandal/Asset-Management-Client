@@ -2,9 +2,10 @@ import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Paper } from "@mui/material";
 import PaymentModal from "../../Components/Shared/Modals/PaymentModal";
+import useCurrentUser from "../../hooks/useCurrentUser";
 
 const Package = () => {
-  const { user } = useAuth();
+  const { data: user } = useCurrentUser();
   const [isOpen, setIsOpen] = useState(false);
   const [packageInfo, setPackageInfo] = useState({});
   const handleOpen = (type, details, member, price) => {

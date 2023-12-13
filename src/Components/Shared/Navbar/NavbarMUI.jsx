@@ -12,12 +12,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import useCurrentUser from "../../../hooks/useCurrentUser";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
 import "./Navbar.css";
 import useAuth from "../../../hooks/useAuth";
 import { Container } from "@mui/material";
-import GridLoader from "react-spinners/GridLoader";
 import Spinner from "../../Spinner/Spinner";
 const drawerWidth = 240;
 const navItems = [
@@ -31,6 +30,7 @@ const employeeNavItems = [
   { title: "My Assets", path: "/employee/my-assets" },
   { title: "Request for asset", path: "/employee/asset-request" },
   { title: "Make Custom Request", path: "/employee/create-custom-request" },
+  { title: "Support", path: "/employee/support" },
   { title: "Profile", path: "/profile" },
 ];
 const adminNavItems = [
